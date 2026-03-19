@@ -4,18 +4,20 @@
 window.addEventListener('load', () => {
   setTimeout(() => {
     const splash = document.getElementById('splashScreen');
-    if (splash) splash.classList.add('fade-out');
+    if (splash) {
+      splash.classList.add('fade-out');
+      splash.classList.add('hidden'); // Ensure both classes for compatibility
+    }
     document.body.style.overflow = ''; // Unlock scroll
-  }, 2600);
+  }, 2000);
 });
 
-// ===== SPLASH SCREEN =====
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const splash = document.getElementById('splashScreen');
-    if (splash) splash.classList.add('hidden');
-  }, 2500);
-});
+// ===== SCROLL ANIMATIONS OBSERVER (Must be defined before use) =====
+const observer = new IntersectionObserver(entries => entries.forEach(e => { 
+  if (e.isIntersecting) { 
+    e.target.classList.add('visible'); 
+  } 
+}), { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
 
 // ===== PRODUCT DATA =====
 const PRODUCTS = [
@@ -110,8 +112,8 @@ function renderProducts(filter) {
   const grid = document.getElementById('productGrid');
   if (!grid) return;
   const list = (!filter || filter === 'all') ? PRODUCTS : PRODUCTS.filter(p => p.category === filter);
-  grid.innerHTML = list.map(p => `
-    <div class="product-card" data-id="${p.id}">
+  grid.innerHTML = list.map((p, idx) => `
+    <div class="product-card animate-on-scroll" style="transition-delay:${idx * 0.08}s" data-id="${p.id}">
       <div class="product-img-wrap">
         <img src="${p.image}" alt="${p.name}" loading="lazy"/>
         ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
@@ -129,11 +131,13 @@ function renderProducts(filter) {
             ${p.originalPrice ? `<span class="original">฿${p.originalPrice.toLocaleString()}</span>` : ''}
             ฿${p.price.toLocaleString()}
           </div>
-          <button class="btn-add-cart" onclick="quickAddToCart(${p.id})" aria-label="add-${p.id}">+ ใส่ตะกร้า</button>
+          <button class="btn-add-cart" onclick="openProductModal(${p.id})" aria-label="order-${p.id}"><i class="fa-solid fa-cart-shopping"></i> สั่งซื้อ</button>
         </div>
       </div>
     </div>
   `).join('');
+  // Re-observe new product cards for scroll animation
+  document.querySelectorAll('.product-card.animate-on-scroll').forEach(el => observer.observe(el));
 }
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -166,9 +170,14 @@ function openProductModal(id) {
       <div class="size-btns">
         ${currentProduct.sizes.map(s => `<button class="size-btn" onclick="selectSize('${s}',this)" aria-label="size-${s}">${s}</button>`).join('')}
       </div>
-      <button class="btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:15px;margin-top:16px;" onclick="addToCartFromModal()">
-        <i class="fa-solid fa-bag-shopping"></i> เพิ่มลงตะกร้า
-      </button>
+      <div id="modalAction" style="display:none; margin-top:16px;">
+        <button class="btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:15px;" onclick="addToCartFromModal()">
+          <i class="fa-solid fa-cart-plus"></i> เพิ่มลงตะกร้า
+        </button>
+      </div>
+      <div id="sizeHint" style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-top:20px;">
+        <i class="fa-solid fa-info-circle"></i> กรุณาเลือกไซส์เพื่อดำเนินการต่อ
+      </div>
     </div>
   `;
   openModal('productModal');
@@ -178,6 +187,12 @@ function selectSize(size, btn) {
   selectedSize = size;
   document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  
+  // แสดงปุ่มเพิ่มลงตะกร้าเมื่อเลือกไซส์แล้ว
+  const action = document.getElementById('modalAction');
+  const hint = document.getElementById('sizeHint');
+  if(action) action.style.display = 'block';
+  if(hint) hint.style.display = 'none';
 }
 
 function addToCartFromModal() {
@@ -203,7 +218,7 @@ function addToCart(product, size) {
   if (ex) ex.qty++;
   else cart.push({ id:product.id, name:product.name, price:product.price, image:product.image, size, qty:1 });
   saveCart(); updateCartUI();
-  showToast(`🛍️ เพิ่ม ${product.name} (${size}) แล้ว!`, 'success');
+  showToast('เพิ่ม ' + product.name + ' (' + size + ') แล้ว!', 'success');
 }
 
 function saveCart() { localStorage.setItem('ts-cart', JSON.stringify(cart)); }
@@ -263,7 +278,7 @@ function changeQty(idx, delta) {
 }
 function removeFromCart(idx) {
   cart.splice(idx, 1); saveCart(); updateCartUI();
-  showToast('🗑️ ลบสินค้าออกแล้ว');
+  showToast('ลบสินค้าออกแล้ว');
 }
 
 window.changeQty      = changeQty;
@@ -428,12 +443,51 @@ onAuthChange((user) => {
       avatar.src = user.photoURL;
       avatar.style.display = 'block';
     }
+
+    // เพิ่มปุ่มพิเศษใน dropdown สำหรับ User ที่ล็อกอินแล้ว
+    const dropdown = document.getElementById('userDropdown');
+    const existingManage = document.getElementById('manageBtn');
+    if (!existingManage) {
+        const hr = document.createElement('hr');
+        hr.id = 'menuDivider';
+        hr.style.borderColor = 'var(--border)';
+        hr.style.margin = '8px 0';
+        
+        const trackBtnMenu = document.createElement('button');
+        trackBtnMenu.className = 'user-dropdown-item';
+        trackBtnMenu.innerHTML = '<i class="fa-solid fa-box"></i> ติดตามออเดอร์';
+        trackBtnMenu.onclick = () => { openModal('trackModal'); wrap.classList.remove('open'); };
+        
+        // ถ้าเป็น Admin (เมลเจ้าของ) ให้เพิ่มปุ่ม Admin Panel
+        if (user.email === 'xzrubik@gmail.com') {
+            const adminBtn = document.createElement('button');
+            adminBtn.className = 'user-dropdown-item';
+            adminBtn.style.color = 'var(--gold)';
+            adminBtn.id = 'manageBtn';
+            adminBtn.innerHTML = '<i class="fa-solid fa-gauge-high"></i> ระบบหลังบ้าน (Admin)';
+            adminBtn.onclick = () => window.location.href = 'admin/index.html';
+            
+            dropdown.insertBefore(hr, document.getElementById('logoutBtn'));
+            dropdown.insertBefore(adminBtn, document.getElementById('logoutBtn'));
+            dropdown.insertBefore(trackBtnMenu, document.getElementById('logoutBtn'));
+        } else {
+            dropdown.insertBefore(hr, document.getElementById('logoutBtn'));
+            dropdown.insertBefore(trackBtnMenu, document.getElementById('logoutBtn'));
+        }
+    }
   } else {
-    // ยังไม่ล็อกอิน → ไอคอน user ปกติ
+    // ยังไม่ล็อกอิน → ล้างปุ่มพิเศษออก
     if (icon) icon.className = 'fa-solid fa-user';
     if (nameEl) nameEl.textContent = '';
     if (emailEl) emailEl.textContent = '';
     if (avatar) avatar.style.display = 'none';
+    
+    // ลบปุ่ม Admin/Track ในเมนูออก
+    document.getElementById('manageBtn')?.remove();
+    document.getElementById('menuDivider')?.remove();
+    document.querySelectorAll('.user-dropdown-item').forEach(item => {
+        if(item.innerHTML.includes('ติดตามออเดอร์')) item.remove();
+    });
   }
 
   // ถ้า login สำเร็จ และมี pending checkout → ไปหน้า checkout เลย
@@ -484,15 +538,16 @@ function showToast(msg, type = 'default') {
   if (!c) return;
   const t = document.createElement('div');
   t.className = `toast ${type}`;
-  t.innerHTML = `<span class="toast-icon">${{success:'✅',error:'❌',warning:'⚠️',default:'💬'}[type]||'💬'}</span><span class="toast-text">${msg}</span>`;
+  const icons = {success:'<i class="fa-solid fa-circle-check"></i>',error:'<i class="fa-solid fa-circle-xmark"></i>',warning:'<i class="fa-solid fa-triangle-exclamation"></i>',default:'<i class="fa-solid fa-bell"></i>'};
+  t.innerHTML = `<span class="toast-icon">${icons[type]||icons.default}</span><span class="toast-text">${msg}</span>`;
   c.appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
 window.showToast = showToast;
 
-// ===== SCROLL ANIMATIONS =====
-const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
-document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
 
 // ===== INIT =====
 updateCartUI();
+// Observe initial static elements
+document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));

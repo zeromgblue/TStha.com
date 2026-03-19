@@ -61,6 +61,10 @@
       <button class="sidebar-link" data-page="products" aria-label="products">
         <i class="fa-solid fa-shirt"></i> สินค้า
       </button>
+      <hr style="border:none; border-top:1px solid var(--border); margin:10px 0;">
+      <a href="../index.html" class="sidebar-link" style="color:var(--gold);">
+        <i class="fa-solid fa-house"></i> กลับหน้าหน้าหลัก
+      </a>
       <button class="sidebar-link" data-page="settings" aria-label="settings">
         <i class="fa-solid fa-gear"></i> ตั้งค่า
       </button>
@@ -82,6 +86,7 @@
     <div class="admin-topbar">
       <div class="admin-topbar-left">
         <button class="btn-icon" id="sidebarToggle" aria-label="menu"><i class="fa-solid fa-bars"></i></button>
+        <a href="../index.html" class="btn-icon" title="กลับหน้าเว็บหลัก" style="text-decoration:none;"><i class="fa-solid fa-house"></i></a>
         <div id="pageTitle" class="admin-page-title">Dashboard</div>
       </div>
       <div class="admin-topbar-right">
@@ -251,8 +256,19 @@
         <textarea id="prodDesc" class="form-textarea" placeholder="รายละเอียดสินค้า..."></textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">URL รูปภาพ</label>
-        <input type="url" id="prodImage" class="form-input" placeholder="https://..."/>
+        <label class="form-label">รูปภาพสินค้า *</label>
+        <div class="upload-container" style="border:2px dashed var(--border);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:var(--transition);" onclick="document.getElementById('prodImageFile').click()">
+          <input type="file" id="prodImageFile" accept="image/*" style="display:none;" onchange="previewImage(this)"/>
+          <div id="uploadPreview" style="display:none;margin-bottom:12px;">
+            <img id="previewImg" src="" alt="preview" style="max-height:150px;border-radius:8px;"/>
+          </div>
+          <div id="uploadPlaceholder">
+            <i class="fa-solid fa-cloud-arrow-up fa-2x" style="color:var(--gold);margin-bottom:10px;"></i>
+            <p style="font-size:0.85rem;color:var(--text-secondary);">คลิกเพื่อเลือกรูปภาพ หรือ ลากไฟล์มาวาง</p>
+          </div>
+          <p id="fileName" style="font-size:0.8rem;color:var(--gold);margin-top:8px;font-weight:600;display:none;"></p>
+        </div>
+        <input type="hidden" id="prodImageUrl"/> <!-- เก็บ URL ที่อัปโหลดเสร็จแล้ว -->
       </div>
       <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
         <i class="fa-solid fa-plus"></i> เพิ่มสินค้า

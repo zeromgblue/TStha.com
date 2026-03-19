@@ -87,8 +87,22 @@ function switchPage(page) {
 }
 window.switchPage = switchPage;
 
-document.getElementById('sidebarToggle')?.addEventListener('click', () => {
-  document.getElementById('sidebar')?.classList.toggle('open');
+document.getElementById('sidebarToggle')?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const sidebar = document.getElementById('sidebar');
+  const app = document.getElementById('adminApp');
+  if (window.innerWidth <= 768) {
+    sidebar?.classList.toggle('open');
+  } else {
+    app?.classList.toggle('collapsed');
+  }
+});
+
+// ปิด Sidebar เมื่อจิ้มที่ Main Content บนมือถือ
+document.querySelector('.admin-main')?.addEventListener('click', () => {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar')?.classList.remove('open');
+  }
 });
 
 // ===== INIT =====
@@ -290,6 +304,39 @@ function renderProductsAdmin(products) {
   `).join('');
 }
 
+// ===== IMAGE UPLOAD & PREVIEW =====
+function previewImage(input) {
+  const file = input.files[0];
+  const preview = document.getElementById('uploadPreview');
+  const img = document.getElementById('previewImg');
+  const placeholder = document.getElementById('uploadPlaceholder');
+  const fileName = document.getElementById('fileName');
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      if(img) img.src = e.target.result;
+      if(preview) preview.style.display = 'block';
+      if(placeholder) placeholder.style.display = 'none';
+      if(fileName) {
+          fileName.textContent = file.name;
+          fileName.style.display = 'block';
+      }
+    }
+    reader.readAsDataURL(file);
+  }
+}
+window.previewImage = previewImage;
+
+async function uploadProductImage(file) {
+  if (!file) return null;
+  // Use Firebase Storage from firebase-storage-compat.js
+  const storageRef = firebase.storage().ref();
+  const fileRef = storageRef.child(`products/${Date.now()}_${file.name}`);
+  const snapshot = await fileRef.put(file);
+  return await snapshot.ref.getDownloadURL();
+}
+
 async function deleteProductItem(docId) {
   if (!confirm('ลบสินค้านี้ใช่ไหม?')) return;
   try {
@@ -303,21 +350,53 @@ window.deleteProductItem = deleteProductItem;
 
 document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const data = {
-    name:        document.getElementById('prodName').value,
-    price:       Number(document.getElementById('prodPrice').value),
-    category:    document.getElementById('prodCategory').value,
-    sizes:       document.getElementById('prodSizes').value.split(',').map(s => s.trim()),
-    description: document.getElementById('prodDesc').value,
-    image:       document.getElementById('prodImage').value,
-  };
+  const btn = e.target.querySelector('[type="submit"]');
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังอัปโหลดรูปภาพ...';
+  btn.disabled = true;
+
   try {
+    const imageFile = document.getElementById('prodImageFile').files[0];
+    if (!imageFile) {
+      showToast('⚠️ กรุณาเลือกรูปภาพสินค้า', 'warning');
+      btn.innerHTML = originalHtml;
+      btn.disabled = false;
+      return;
+    }
+
+    // 1. อัปโหลดรูปภาพไปที่ Storage
+    const imageUrl = await uploadProductImage(imageFile);
+    
+    // 2. เตรียมข้อมูลสินค้า
+    const data = {
+      name:        document.getElementById('prodName').value,
+      price:       Number(document.getElementById('prodPrice').value),
+      category:    document.getElementById('prodCategory').value,
+      sizes:       document.getElementById('prodSizes').value.split(',').map(s => s.trim()),
+      description: document.getElementById('prodDesc').value,
+      image:       imageUrl, // ใช้ URL จาก Storage
+    };
+
+    // 3. บันทึกลง Firestore
     await addProduct(data, null);
-    showToast('✅ เพิ่มสินค้าสำเร็จ!', 'success');
+    
+    showToast('✅ เพิ่มสินค้าและอัปโหลดรูปสำเร็จ!', 'success');
     closeModal('addProductModal');
     e.target.reset();
+    
+    // Reset Preview
+    document.getElementById('uploadPreview').style.display = 'none';
+    document.getElementById('uploadPlaceholder').style.display = 'block';
+    document.getElementById('fileName').style.display = 'none';
+    
     await loadProducts();
-  } catch { showToast('❌ เกิดข้อผิดพลาด', 'error'); }
+  } catch (err) {
+    console.error(err);
+    showToast('❌ เกิดข้อผิดพลาดในการอัปโหลด', 'error');
+  } finally {
+    btn.innerHTML = originalHtml;
+    btn.disabled = false;
+  }
 });
 
 // ===== HELPERS =====
