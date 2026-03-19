@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TS Tha — Premium Thai Streetwear</title>
+  <meta name="description" content="TS Tha แบรนด์เสื้อผ้าสตรีทสไตล์จากไทย คุณภาพพรีเมียม สไตล์ไม่ซ้ำใคร" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body style="overflow: hidden;"> <!-- Lock scroll until splash ends -->
+
+<!-- PREMIMUM SPLASH SCREEN (สวยๆ เด้อ) -->
+<div id="splashScreen" class="splash-screen">
+  <div class="splash-content">
+    <div class="splash-logo">
+      <img src="c:\Users\zero123\Downloads\651620707_765171699779650_284691212346448808_n.jpg" alt="Logo" class="splash-logo-img"/>
+    </div>
+    <div class="splash-brand">
+      <span class="splash-ts">TS</span><span class="splash-tha">Tha</span>
+    </div>
+    <div class="splash-tagline">Premium Thai Streetwear</div>
+    <div class="splash-loader">
+      <div class="loader-bar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SPLASH SCREEN -->
+<div id="splashScreen" class="splash-screen">
+  <div class="splash-content">
+    <div class="splash-logo">
+      <img src="assets/img/logo.png" alt="TS Tha Logo" class="splash-logo-img"/>
+    </div>
+    <div class="splash-brand">
+      <span class="splash-ts">TS</span><span class="splash-tha">Tha</span>
+    </div>
+    <div class="splash-tagline">Premium Thai Streetwear</div>
+    <div class="splash-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar">
+  <div class="marquee">
+    <span>🔥 NEW DROP — คอลเลกชันใหม่มาแล้ว!</span>
+    <span>🚚 ส่งฟรีทั่วไทย ทุกรายการ</span>
+    <span>⚡ สต็อกจำกัด — รีบจัดก่อนหมด!</span>
+    <span>✅ สินค้าคุณภาพพรีเมียม ผลิตในไทย 100%</span>
+    <span>🔥 NEW DROP — คอลเลกชันใหม่มาแล้ว!</span>
+    <span>🚚 ส่งฟรีทั่วไทย ทุกรายการ</span>
+    <span>⚡ สต็อกจำกัด — รีบจัดก่อนหมด!</span>
+    <span>✅ สินค้าคุณภาพพรีเมียม ผลิตในไทย 100%</span>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="nav-logo">
+    <img src="c:\Users\zero123\Downloads\651620707_765171699779650_284691212346448808_n.jpg" alt="TS Tha" class="nav-logo-img"/>
+    TS<span>Tha</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#home">หน้าแรก</a></li>
+    <li><a href="#shop">สินค้า</a></li>
+    <li><a href="#about">เกี่ยวกับเรา</a></li>
+    <li><a href="#contact">ติดต่อ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-icon" id="themeToggle" title="เปลี่ยนธีม">
+      <i class="fa-solid fa-moon" id="themeIcon"></i>
+    </button>
+    <button class="btn-icon" id="trackBtn" title="ตรวจสอบออเดอร์" aria-label="track-order">
+      <i class="fa-solid fa-box"></i>
+    </button>
+    <!-- USER BUTTON + DROPDOWN -->
+    <div class="user-menu-wrap" id="userMenuWrap">
+      <button class="btn-icon" id="loginBtn" title="เข้าสู่ระบบ" aria-label="login">
+        <i class="fa-solid fa-user" id="userIcon"></i>
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-dropdown-info">
+          <img id="userAvatar" src="" alt="" class="user-avatar" style="display:none;"/>
+          <div>
+            <div id="userDisplayName" style="font-weight:700;font-size:0.9rem;"></div>
+            <div id="userEmail" style="font-size:0.75rem;color:var(--text-muted);"></div>
+          </div>
+        </div>
+        <hr style="border-color:var(--border);margin:8px 0;"/>
+        <button class="user-dropdown-item" onclick="openModal('trackModal')">
+          <i class="fa-solid fa-box"></i> ติดตามออเดอร์
+        </button>
+        <button class="user-dropdown-item danger" id="logoutBtn">
+          <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+        </button>
+      </div>
+    </div>
+    <button class="btn-icon cart-btn" id="cartBtn" title="รถเข็น" aria-label="cart">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO SLIDER -->
+<section class="hero" id="home">
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=1800&q=85&fit=crop')">
+      <div class="hero-content">
+        <div class="hero-tag">New Collection 2025</div>
+        <h1 class="hero-title">สไตล์ที่บ่งบอก<br/>ตัวตนของคุณ</h1>
+        <p class="hero-subtitle">แบรนด์เสื้อผ้าสตรีทสไตล์จากไทย<br/>ดีไซน์ไม่ซ้ำใคร คุณภาพพรีเมียม</p>
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+            <i class="fa-solid fa-bag-shopping"></i> ช็อปเลย
+          </button>
+          <button class="btn-outline" onclick="openModal('aboutModal')">รู้จักเรา</button>
+        </div>
+      </div>
+    </div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1800&q=85&fit=crop')">
+      <div class="hero-content">
+        <div class="hero-tag">Best Seller</div>
+        <h1 class="hero-title">Oversized Series<br/>ขายดีที่สุด</h1>
+        <p class="hero-subtitle">เสื้อโอเวอร์ไซส์ผ้าดี ไม่หด ไม่ยับ<br/>ใส่สบายตลอดวัน</p>
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+            <i class="fa-solid fa-fire"></i> ดูสินค้า
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=1800&q=85&fit=crop')">
+      <div class="hero-content">
+        <div class="hero-tag">Limited Edition</div>
+        <h1 class="hero-title">Limited Drop<br/>จำนวนจำกัด</h1>
+        <p class="hero-subtitle">คอลเลกชันพิเศษ ผลิตน้อยชิ้น<br/>หมดแล้วหมดเลย!</p>
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+            <i class="fa-solid fa-bolt"></i> รีบจัดก่อนหมด
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="slider-arrow prev" id="sliderPrev" aria-label="previous"><i class="fa-solid fa-chevron-left"></i></button>
+  <button class="slider-arrow next" id="sliderNext" aria-label="next"><i class="fa-solid fa-chevron-right"></i></button>
+  <div class="slider-dots" id="sliderDots"></div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" style="padding-top:60px;padding-bottom:60px;">
+  <div class="features-grid">
+    <div class="feature-card animate-on-scroll">
+      <div class="feature-icon">🚚</div>
+      <div class="feature-title">ส่งฟรีทั่วไทย</div>
+      <div class="feature-desc">ส่งฟรีทุกรายการ ไม่มีขั้นต่ำ รวดเร็วทันใจ</div>
+    </div>
+    <div class="feature-card animate-on-scroll" style="transition-delay:.1s">
+      <div class="feature-icon">✅</div>
+      <div class="feature-title">ของแท้ 100%</div>
+      <div class="feature-desc">ผลิตเองในไทย คุณภาพพรีเมียม รับประกันทุกชิ้น</div>
+    </div>
+    <div class="feature-card animate-on-scroll" style="transition-delay:.2s">
+      <div class="feature-icon">🔁</div>
+      <div class="feature-title">เปลี่ยนไซส์ได้</div>
+      <div class="feature-desc">ไซส์ไม่พอดีบอกเลย แอดมินดูแลทุกปัญหา</div>
+    </div>
+    <div class="feature-card animate-on-scroll" style="transition-delay:.3s">
+      <div class="feature-icon">💬</div>
+      <div class="feature-title">แอดมินตอบไว</div>
+      <div class="feature-desc">สอบถามได้ตลอด 24 ชม. ทาง Line และ Instagram</div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section class="section" id="shop">
+  <div class="section-header animate-on-scroll">
+    <span class="section-label">Shop Now</span>
+    <h2 class="section-title">สินค้าของเรา</h2>
+    <p class="section-subtitle">เลือกสไตล์ที่ใช่ หลากหลายคอลเลกชัน</p>
+  </div>
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+    <button class="filter-btn" data-filter="oversized">โอเวอร์ไซส์</button>
+    <button class="filter-btn" data-filter="regular">ทรงปกติ</button>
+    <button class="filter-btn" data-filter="hoodie">ฮู้ดดี้</button>
+    <button class="filter-btn" data-filter="limited">Limited</button>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- ABOUT -->
+<section style="background:var(--bg-secondary);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:100px 40px;" id="about">
+  <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
+    <div class="animate-on-scroll">
+      <span class="section-label">เกี่ยวกับเรา</span>
+      <h2 class="section-title" style="text-align:left;margin-bottom:20px;">แบรนด์ที่เกิดจาก<br/>คนไทย เพื่อคนไทย</h2>
+      <p style="color:var(--text-secondary);line-height:1.9;margin-bottom:16px;font-size:1rem;">
+        <strong>TS Tha</strong> คือแบรนด์เสื้อผ้าสตรีทสไตล์ที่กำเนิดขึ้นจากความหลงใหลในแฟชั่นของกลุ่มเพื่อน เราออกแบบทุกชิ้นด้วยความตั้งใจ และผลิตในไทยทุกชิ้น
+      </p>
+      <p style="color:var(--text-secondary);line-height:1.9;font-size:1rem;">
+        เป้าหมายของเราคือการมอบเสื้อผ้าคุณภาพสูงในราคาที่จับต้องได้
+      </p>
+      <div style="margin-top:28px;display:flex;gap:40px;">
+        <div>
+          <div style="font-size:2rem;font-weight:900;color:var(--gold);">500+</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">ลูกค้าพึงพอใจ</div>
+        </div>
+        <div>
+          <div style="font-size:2rem;font-weight:900;color:var(--gold);">50+</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">รุ่นสินค้า</div>
+        </div>
+        <div>
+          <div style="font-size:2rem;font-weight:900;color:var(--gold);">100%</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">ผลิตในไทย</div>
+        </div>
+      </div>
+    </div>
+    <div class="animate-on-scroll" style="border-radius:24px;overflow:hidden;aspect-ratio:4/3;background:var(--bg-card);">
+      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&q=85&fit=crop" alt="TS Tha Brand" style="width:100%;height:100%;object-fit:cover;"/>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="section-header animate-on-scroll">
+    <span class="section-label">Contact Us</span>
+    <h2 class="section-title">ช่องทางติดต่อ</h2>
+    <p class="section-subtitle">พร้อมตอบทุกคำถาม ตลอด 24 ชั่วโมง</p>
+  </div>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
+    <a href="https://line.me/ti/p/YOUR_LINE_ID" target="_blank" class="contact-btn contact-line" style="font-size:1rem;padding:16px 32px;border-radius:16px;">
+      <i class="fa-brands fa-line fa-lg"></i> LINE: @TSTha
+    </a>
+    <a href="https://instagram.com/YOUR_IG" target="_blank" class="contact-btn contact-ig" style="font-size:1rem;padding:16px 32px;border-radius:16px;">
+      <i class="fa-brands fa-instagram fa-lg"></i> Instagram: @TSTha
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">TS<span>Tha</span></div>
+      <p class="footer-desc">แบรนด์เสื้อผ้าสตรีทสไตล์จากไทย ดีไซน์ไม่ซ้ำใคร ผลิตด้วยความตั้งใจทุกชิ้น</p>
+      <div class="footer-socials">
+        <a href="https://line.me/ti/p/YOUR_LINE_ID" target="_blank" class="footer-social" aria-label="line"><i class="fa-brands fa-line"></i></a>
+        <a href="https://instagram.com/YOUR_IG" target="_blank" class="footer-social" aria-label="instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://tiktok.com/@YOUR_TIKTOK" target="_blank" class="footer-social" aria-label="tiktok"><i class="fa-brands fa-tiktok"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>สินค้า</h4>
+      <ul>
+        <li><a href="#shop">โอเวอร์ไซส์</a></li>
+        <li><a href="#shop">ฮู้ดดี้</a></li>
+        <li><a href="#shop">Limited Edition</a></li>
+        <li><a href="#shop">New Arrivals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>ช่วยเหลือ</h4>
+      <ul>
+        <li><a href="#" onclick="openModal('trackModal')">ติดตามออเดอร์</a></li>
+        <li><a href="#contact">ติดต่อเรา</a></li>
+        <li><a href="#">คู่มือไซส์</a></li>
+        <li><a href="#">นโยบายคืนสินค้า</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>บัญชีของคุณ</h4>
+      <ul>
+        <li><a href="#" onclick="openModal('loginModal')">เข้าสู่ระบบ</a></li>
+        <li><a href="#" onclick="openModal('loginModal')">สมัครสมาชิก</a></li>
+        <li><a href="#">ประวัติการสั่งซื้อ</a></li>
+        <li><a href="admin/index.html">Admin Panel</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 TS Tha. All rights reserved. Made with ❤️ in Thailand.</div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>🛍️ รถเข็นของคุณ</h3>
+    <button class="btn-icon" onclick="closeCart()" aria-label="close-cart"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty">
+      <div class="icon">🛒</div>
+      <p>ยังไม่มีสินค้าในรถเข็น</p>
+      <button class="btn-primary" onclick="closeCart();document.getElementById('shop').scrollIntoView({behavior:'smooth'})">เลือกสินค้า</button>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total-row">
+      <span class="cart-total-label">รวมทั้งหมด</span>
+      <span class="cart-total-price" id="cartTotal">฿0</span>
+    </div>
+    <button class="btn-checkout" id="checkoutBtn">
+      <i class="fa-solid fa-lock"></i> ดำเนินการสั่งซื้อ
+    </button>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal" style="max-width:750px;padding:30px;">
+    <button class="modal-close" onclick="closeModal('productModal')" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+    <div class="product-modal-grid" id="productModalContent"></div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('checkoutModal')" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+    <h2>📦 ข้อมูลการจัดส่ง</h2>
+    <p class="subtitle">กรุณากรอกข้อมูลให้ครบถ้วนเพื่อดำเนินการสั่งซื้อ</p>
+    <div class="checkout-summary" id="checkoutSummary"></div>
+    <form id="checkoutForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="firstName">ชื่อ *</label>
+          <input type="text" id="firstName" class="form-input" placeholder="ชื่อจริง" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="lastName">นามสกุล *</label>
+          <input type="text" id="lastName" class="form-input" placeholder="นามสกุล" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="phone">เบอร์โทรศัพท์ *</label>
+        <input type="tel" id="phone" class="form-input" placeholder="0X-XXXX-XXXX" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="address">ที่อยู่ *</label>
+        <textarea id="address" class="form-textarea" placeholder="บ้านเลขที่, หมู่, ตรอก/ซอย, ถนน" required></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="district">ตำบล/แขวง *</label>
+          <input type="text" id="district" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="amphoe">อำเภอ/เขต *</label>
+          <input type="text" id="amphoe" class="form-input" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="province">จังหวัด *</label>
+          <input type="text" id="province" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="zipcode">รหัสไปรษณีย์ *</label>
+          <input type="text" id="zipcode" class="form-input" placeholder="XXXXX" maxlength="5" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="note">หมายเหตุ</label>
+        <input type="text" id="note" class="form-input" placeholder="ข้อความพิเศษ (ถ้ามี)" />
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:8px;font-size:1.05rem;padding:16px;">
+        <i class="fa-solid fa-check"></i> ยืนยันการสั่งซื้อ
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ORDER SUCCESS MODAL -->
+<div class="modal-overlay" id="orderSuccessModal">
+  <div class="modal" style="text-align:center;">
+    <div class="order-success">
+      <div class="order-icon">🎉</div>
+      <h2>สั่งซื้อสำเร็จแล้ว!</h2>
+      <p class="subtitle">กรุณาบันทึก Order ID ของคุณไว้</p>
+      <div class="order-id-box">
+        <div class="order-id-label">Order ID ของคุณ</div>
+        <div class="order-id-value" id="displayOrderId">#TS-00000</div>
+        <button onclick="copyOrderId()" class="btn-primary" style="width:100%;justify-content:center;" id="copyBtn">
+          <i class="fa-solid fa-copy"></i> คัดลอก Order ID
+        </button>
+      </div>
+      <div style="background:rgba(201,168,76,0.1);border:1px solid var(--gold);border-radius:14px;padding:16px;margin:16px 0;text-align:left;">
+        <p style="font-weight:700;margin-bottom:8px;color:var(--gold);">📋 ขั้นตอนถัดไป:</p>
+        <ol style="padding-left:18px;color:var(--text-secondary);font-size:0.9rem;line-height:2;">
+          <li>แคปหน้าจอ หรือ คัดลอก Order ID ด้านบน</li>
+          <li>ทักหาเราผ่านช่องทางด้านล่าง</li>
+          <li>แจ้ง Order ID และยืนยันการชำระเงิน</li>
+          <li>รอรับสินค้าได้เลย! 🚀</li>
+        </ol>
+      </div>
+      <div class="order-contacts">
+        <a href="https://line.me/ti/p/YOUR_LINE" target="_blank" class="contact-btn contact-line">
+          <i class="fa-brands fa-line"></i> ทัก LINE
+        </a>
+        <a href="https://instagram.com/YOUR_IG" target="_blank" class="contact-btn contact-ig">
+          <i class="fa-brands fa-instagram"></i> DM Instagram
+        </a>
+      </div>
+      <button onclick="closeModal('orderSuccessModal')" style="margin-top:14px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-family:inherit;font-size:0.9rem;text-decoration:underline;">
+        ปิดหน้าต่างนี้
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TRACK ORDER MODAL -->
+<div class="modal-overlay" id="trackModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('trackModal')" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+    <h2>📦 ตรวจสอบออเดอร์</h2>
+    <p class="subtitle">ใส่ Order ID ที่ได้รับหลังจากสั่งซื้อ</p>
+    <div class="form-group">
+      <label class="form-label" for="trackInput">Order ID</label>
+      <input type="text" id="trackInput" class="form-input" placeholder="เช่น #TS-ABC123" style="font-size:1.1rem;text-align:center;letter-spacing:2px;" />
+    </div>
+    <button class="btn-primary" style="width:100%;justify-content:center;" onclick="trackOrder()">
+      <i class="fa-solid fa-magnifying-glass"></i> ค้นหา
+    </button>
+    <div id="trackResult" style="margin-top:20px;"></div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+    <h2>เข้าสู่ระบบ</h2>
+    <p class="subtitle">เพื่อดูประวัติการสั่งซื้อและสิทธิพิเศษ</p>
+    <div class="social-login">
+      <button class="btn-social" onclick="handleGoogleLogin()">
+        <img src="https://www.google.com/favicon.ico" width="20" alt="Google" /> เข้าสู่ระบบด้วย Google
+      </button>
+    </div>
+    <div class="divider">หรือ</div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">อีเมล</label>
+        <input type="email" id="loginEmail" class="form-input" placeholder="email@example.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="loginPassword">รหัสผ่าน</label>
+        <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" />
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">เข้าสู่ระบบ</button>
+    </form>
+    <p style="text-align:center;margin-top:16px;font-size:0.9rem;color:var(--text-muted);">
+      ยังไม่มีบัญชี? <a href="#" style="color:var(--gold);font-weight:600;text-decoration:none;">สมัครสมาชิก</a>
+    </p>
+  </div>
+</div>
+
+<!-- ABOUT MODAL -->
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('aboutModal')" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+    <div style="text-align:center;">
+      <div style="font-size:3rem;margin-bottom:12px;">👕</div>
+      <h2>เกี่ยวกับ TS Tha</h2>
+      <p style="color:var(--text-secondary);line-height:1.9;margin-top:12px;">TS Tha เกิดขึ้นจากความหลงใหลในแฟชั่นสตรีทสไตล์ของกลุ่มเพื่อน เราออกแบบทุกชิ้นด้วยความตั้งใจ และมุ่งมั่นที่จะนำเสนอผ้าคุณภาพด้วยราคาที่ทุกคนเข้าถึงได้</p>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Firebase CDN (Compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-storage-compat.js"></script>
+<!-- TS Tha Scripts -->
+<script src="assets/js/firebase.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant User as ลูกค้า
+    participant Frontend as เว็บไซต์
+    participant Backend as ฐานข้อมูล (Database)
+    participant Admin as ระบบแอดมิน
+
+    User->>Frontend: เลือกเสื้อผ้า สรุปยอด และสั่งซื้อ
+    Frontend->>Backend: สร้างรายการคำสั่งซื้อใหม่ (รอชำระเงิน)
+    Backend-->>User: แสดงหน้าแจ้งชำระเงิน/แนบสลิป
+    User->>Frontend: อัปโหลดสลิปโอนเงิน
+    Frontend->>Backend: อัปเดตสถานะเป็น "ตรวจสอบยอดเงิน"
+    Backend-->>Admin: แจ้งเตือนแอดมินมีรายการใหม่
+    Admin->>Backend: ตรวจสอบสลิป & ยืนยันการชำระเงิน
+    Admin->>Backend: อัปเดตเลขพัสดุและสถานะจัดส่ง
+    Backend-->>User: ลูกค้าเห็นสถานะเปลี่ยนเป็น "จัดส่งแล้ว"

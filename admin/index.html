@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TS Tha — Admin Panel</title>
+  <meta name="robots" content="noindex,nofollow"/>
+  <link rel="stylesheet" href="../assets/css/style.css"/>
+  <link rel="stylesheet" href="admin.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- LOGIN GATE -->
+<div id="adminLoginGate" class="admin-login-gate">
+  <div class="admin-login-box">
+    <div class="admin-login-logo">TS<span>Tha</span></div>
+    <div class="admin-login-label">Admin Panel</div>
+    <h2 style="margin-bottom:8px;">เข้าสู่ระบบแอดมิน</h2>
+    <p id="loginError" style="color:var(--danger);font-size:0.9rem;min-height:20px;margin-bottom:16px;"></p>
+
+    <!-- ✅ Google Sign-in (แนะนำ) -->
+    <button id="adminGoogleBtn" class="btn-social" style="width:100%;justify-content:center;font-size:1rem;padding:14px;margin-bottom:16px;">
+      <img src="https://www.google.com/favicon.ico" width="20" alt="Google"/> เข้าสู่ระบบด้วย Google
+    </button>
+
+    <div class="divider">หรือกรอกอีเมล/รหัสผ่าน</div>
+
+    <form id="adminLoginForm" style="margin-top:16px;">
+      <div class="form-group">
+        <label class="form-label" for="adminEmail">อีเมล</label>
+        <input type="email" id="adminEmail" class="form-input" placeholder="admin@tsstha.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="adminPassword">รหัสผ่าน</label>
+        <input type="password" id="adminPassword" class="form-input" placeholder="••••••••"/>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;justify-content:center;" id="adminLoginBtn">
+        <i class="fa-solid fa-lock"></i> เข้าสู่ระบบ
+      </button>
+    </form>
+  </div>
+</div>
+
+
+<!-- ADMIN PANEL (hidden until login) -->
+<div id="adminApp" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="sidebar">
+    <div class="sidebar-logo">TS<span>Tha</span></div>
+    <div class="sidebar-role">Admin Panel</div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-link active" data-page="dashboard" aria-label="dashboard">
+        <i class="fa-solid fa-gauge-high"></i> Dashboard
+      </button>
+      <button class="sidebar-link" data-page="orders" aria-label="orders">
+        <i class="fa-solid fa-box"></i> คำสั่งซื้อ
+        <span class="sidebar-badge" id="pendingBadge">0</span>
+      </button>
+      <button class="sidebar-link" data-page="products" aria-label="products">
+        <i class="fa-solid fa-shirt"></i> สินค้า
+      </button>
+      <button class="sidebar-link" data-page="settings" aria-label="settings">
+        <i class="fa-solid fa-gear"></i> ตั้งค่า
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-icon" id="adminThemeToggle" title="เปลี่ยนธีม" aria-label="theme">
+        <i class="fa-solid fa-moon" id="adminThemeIcon"></i>
+      </button>
+      <button class="btn-icon" id="adminLogoutBtn" title="ออกจากระบบ" aria-label="logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="admin-main">
+
+    <!-- TOP BAR -->
+    <div class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button class="btn-icon" id="sidebarToggle" aria-label="menu"><i class="fa-solid fa-bars"></i></button>
+        <div id="pageTitle" class="admin-page-title">Dashboard</div>
+      </div>
+      <div class="admin-topbar-right">
+        <div class="admin-user-info" id="adminUserInfo">
+          <i class="fa-solid fa-user-shield"></i> <span id="adminUserName">Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DASHBOARD PAGE ===== -->
+    <div class="admin-page active" id="page-dashboard">
+      <div class="admin-stats-grid">
+        <div class="stat-card animate-on-scroll">
+          <div class="stat-icon" style="background:rgba(201,168,76,0.15);color:var(--gold);">
+            <i class="fa-solid fa-box"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="statTotal">0</div>
+            <div class="stat-label">คำสั่งซื้อทั้งหมด</div>
+          </div>
+        </div>
+        <div class="stat-card animate-on-scroll" style="transition-delay:.1s;">
+          <div class="stat-icon" style="background:rgba(234,179,8,0.15);color:#eab308;">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="statPending">0</div>
+            <div class="stat-label">รอดำเนินการ</div>
+          </div>
+        </div>
+        <div class="stat-card animate-on-scroll" style="transition-delay:.2s;">
+          <div class="stat-icon" style="background:rgba(34,197,94,0.15);color:var(--success);">
+            <i class="fa-solid fa-truck"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="statShipped">0</div>
+            <div class="stat-label">จัดส่งแล้ว</div>
+          </div>
+        </div>
+        <div class="stat-card animate-on-scroll" style="transition-delay:.3s;">
+          <div class="stat-icon" style="background:rgba(99,102,241,0.15);color:#6366f1;">
+            <i class="fa-solid fa-baht-sign"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="statRevenue">฿0</div>
+            <div class="stat-label">ยอดขายรวม</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card" style="margin-top:28px;">
+        <div class="admin-card-header">
+          <h3><i class="fa-solid fa-clock-rotate-left"></i> คำสั่งซื้อล่าสุด</h3>
+          <button class="btn-primary" onclick="switchPage('orders')" style="padding:8px 18px;font-size:0.85rem;">ดูทั้งหมด</button>
+        </div>
+        <div id="recentOrdersList"></div>
+      </div>
+    </div>
+
+    <!-- ===== ORDERS PAGE ===== -->
+    <div class="admin-page" id="page-orders">
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3><i class="fa-solid fa-magnifying-glass"></i> ค้นหา Order ID</h3>
+          <button class="btn-primary" onclick="loadOrders()" style="padding:8px 18px;font-size:0.85rem;">
+            <i class="fa-solid fa-rotate"></i> รีเฟรช
+          </button>
+        </div>
+        <div style="display:flex;gap:12px;margin-bottom:24px;">
+          <input type="text" id="orderSearchInput" class="form-input" placeholder="ค้นหา Order ID หรือชื่อลูกค้า..." style="flex:1;"/>
+          <button class="btn-primary" onclick="searchOrder()" aria-label="search-order">
+            <i class="fa-solid fa-magnifying-glass"></i> ค้นหา
+          </button>
+          <select id="orderStatusFilter" class="form-input" style="width:180px;" onchange="filterOrders()">
+            <option value="all">ทุกสถานะ</option>
+            <option value="pending">รอดำเนินการ</option>
+            <option value="confirmed">ยืนยันแล้ว</option>
+            <option value="shipped">จัดส่งแล้ว</option>
+            <option value="cancelled">ยกเลิก</option>
+          </select>
+        </div>
+        <div id="ordersTable"></div>
+      </div>
+    </div>
+
+    <!-- ===== PRODUCTS PAGE ===== -->
+    <div class="admin-page" id="page-products">
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3><i class="fa-solid fa-shirt"></i> จัดการสินค้า</h3>
+          <button class="btn-primary" onclick="openModal('addProductModal')" style="padding:8px 18px;font-size:0.85rem;">
+            <i class="fa-solid fa-plus"></i> เพิ่มสินค้า
+          </button>
+        </div>
+        <div id="productsAdminGrid" class="products-admin-grid"></div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div class="admin-page" id="page-settings">
+      <div class="admin-card">
+        <div class="admin-card-header"><h3><i class="fa-solid fa-gear"></i> ตั้งค่าร้านค้า</h3></div>
+        <div class="form-group">
+          <label class="form-label">ชื่อแบรนด์</label>
+          <input type="text" class="form-input" value="TS Tha"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">LINE ID</label>
+          <input type="text" class="form-input" placeholder="@TSTha"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Facebook Page URL</label>
+          <input type="text" class="form-input" placeholder="https://facebook.com/..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ข้อความต้อนรับออเดอร์</label>
+          <textarea class="form-textarea">ขอบคุณที่สั่งซื้อกับ TS Tha! กรุณาแคปหน้าจอหรือคัดลอก Order ID แล้วทักมาหาเราทาง Line หรือ Facebook ได้เลยนะครับ</textarea>
+        </div>
+        <button class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึกการตั้งค่า</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div class="modal-overlay" id="orderDetailModal">
+  <div class="modal" style="max-width:640px;">
+    <button class="modal-close" onclick="closeModal('orderDetailModal')" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+    <h2>📦 รายละเอียดออเดอร์</h2>
+    <div id="orderDetailContent"></div>
+  </div>
+</div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="modal-overlay" id="addProductModal">
+  <div class="modal" style="max-width:560px;">
+    <button class="modal-close" onclick="closeModal('addProductModal')" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+    <h2>➕ เพิ่มสินค้าใหม่</h2>
+    <p class="subtitle">กรอกข้อมูลสินค้าที่ต้องการเพิ่ม</p>
+    <form id="addProductForm">
+      <div class="form-group">
+        <label class="form-label">ชื่อสินค้า *</label>
+        <input type="text" id="prodName" class="form-input" required/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ราคา (฿) *</label>
+          <input type="number" id="prodPrice" class="form-input" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">หมวดหมู่ *</label>
+          <select id="prodCategory" class="form-input">
+            <option value="oversized">โอเวอร์ไซส์</option>
+            <option value="hoodie">ฮู้ดดี้</option>
+            <option value="regular">ทรงปกติ</option>
+            <option value="limited">Limited</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ไซส์ที่มี (คั่นด้วยลูกน้ำ) *</label>
+        <input type="text" id="prodSizes" class="form-input" placeholder="S,M,L,XL,XXL" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">คำอธิบาย</label>
+        <textarea id="prodDesc" class="form-textarea" placeholder="รายละเอียดสินค้า..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL รูปภาพ</label>
+        <input type="url" id="prodImage" class="form-input" placeholder="https://..."/>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
+        <i class="fa-solid fa-plus"></i> เพิ่มสินค้า
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Firebase CDN (Compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-storage-compat.js"></script>
+<!-- TS Tha Admin Scripts -->
+<script src="../assets/js/firebase.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
